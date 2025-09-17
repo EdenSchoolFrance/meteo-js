@@ -67,6 +67,8 @@
     }
 
     .city-card {
+      display: flex;
+      justify-content: space-between;
       background: #ecf0f1;
       padding: 15px;
       border-radius: 6px;
@@ -81,6 +83,10 @@
 
     .city-card p {
       margin-bottom: 6px;
+    }
+    .city-card img {
+      width: 200px;
+      height: 200px;
     }
 
     .error {
