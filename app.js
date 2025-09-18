@@ -69,7 +69,7 @@ function createMéteo(dataMetéo, dataWiki) {
         break;
 
         case 'Overcast ' || 'Partly Cloudy ' || 'Mist ':
-        $advice.textContent = 'Prenez un manteau';
+        $advice.textContent = 'Prenez un manteau.';
         break;
 
         default:
