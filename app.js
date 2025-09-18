@@ -33,44 +33,7 @@ form.addEventListener("submit", (e) => {
 
 });
 
-const firstTask = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        if (Math.random() > 0.5) {
-            reject("Task rejected");
-            $resultsDiv.innerHTML = "";
-        } else {
-            resolve("Task resolved");
-            $resultsDiv.innerHTML = "";
-        }
 
-    }, 800);
-})
-
-const secondTask = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        if (Math.random() > 0.5) {
-            reject("Task rejected");
-            $resultsDiv.innerHTML = "";
-        } else {
-            resolve("Task resolved");
-            $resultsDiv.innerHTML = "";
-        }
-
-    }, 800);
-})
-
-const thirdTask = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        if (Math.random() > 0.5) {
-            reject("Task rejected");
-            $resultsDiv.innerHTML = "";
-        } else {
-            resolve("Task resolved");
-            $resultsDiv.innerHTML = "";
-        }
-
-    }, 800);
-})
 
 async function fetchData(city) {
     try {
