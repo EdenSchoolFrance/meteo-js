@@ -2,32 +2,41 @@ const $form = document.getElementById("weatherForm");
 const $resultsDiv = document.getElementById("results");
 const $cityInput = document.getElementById("cityInput")
 
-let cities = $cityInput.value.split(", ")
+let cities = [];
 
 async function fetchMeteo() {
-    const res = await fetch("https://wttr.in/Paris?format=j1")
-    const data = await res.json()
+    cities = $cityInput.value.split(",").map(c => c.trim()).filter(c => c);
+    
+    const promises = cities.map(city => {
+        const meteoPromise = fetch(`https://wttr.in/${city}?format=j1`).then(res => res.json());
+        const wikiPromise = fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${city}`).then(res => res.json());
+        return Promise.all([meteoPromise, wikiPromise]);
+    });
 
     try {
+        const results = await Promise.all(promises);
         $resultsDiv.innerHTML = "";
-        displayMeteo(data)
+        results.forEach(result => {
+            const [meteoData, wikiData] = result;
+            displayMeteo(meteoData, wikiData);
+        });
+
     } catch(err) {
-        $resultsDiv.innerHTML = "<p>Pas trouvé</p>";
+        $resultsDiv.innerHTML = "<p>Une erreur est survenue lors de la récupération des données.</p>";
         console.log(err);
     }
 }
 
-function displayMeteo(data) {
+function displayMeteo(meteoData, wikiData) {
     const cardCity = document.createElement("div")
     cardCity.classList.add("city-card")
     cardCity.innerHTML = `
-        <h2>${data.nearest_area[0].areaName[0].value}</h2>
-        <p>${data.current_condition[0].temp_C}</p>
-        <p>${data.current_condition[0].weatherDesc[0].value}</p>
+        <h2>${meteoData.nearest_area[0].areaName[0].value}</h2>
+        <p>${meteoData.current_condition[0].temp_C} °C</p>
+        <p>${meteoData.current_condition[0].weatherDesc[0].value}</p>
+        <p>${wikiData.description || 'Description non disponible.'}</p>
     `
     $resultsDiv.appendChild(cardCity)
-    console.log(cardCity);
-    
 }
 
 
