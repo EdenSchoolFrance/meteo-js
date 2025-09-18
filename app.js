@@ -26,7 +26,7 @@ form.addEventListener("submit", (e) => {
             })
 
             Promise.all([namesTab]).then((values) => {
-                console.log(values);
+                // console.log(values);
             });
           }
           else
@@ -48,7 +48,7 @@ function createMéteo(dataMetéo, dataWiki) {
     const $countryTemp = document.createElement("p");
     const $countryDesc = document.createElement("p");
     const $wikiDesc = document.createElement("p");
-    const $advice = document.createElement("p");
+    const $advice = document.createElement("h3");
 
     $country.textContent = dataMetéo.nearest_area[0].country[0].value;
     $city.textContent = dataMetéo.nearest_area[0].areaName[0].value;
@@ -56,16 +56,20 @@ function createMéteo(dataMetéo, dataWiki) {
     $countryTemp.textContent = `Température: °C ${dataMetéo.weather[0].hourly[0].tempC}`;
     $countryDesc.textContent = `Description: ${dataMetéo.weather[0].hourly[0].weatherDesc[0].value}`;
     $wikiDesc.textContent = dataWiki.extract;
-    console.log(dataMetéo.weather[0].hourly[0].weatherDesc[0].value)
+    // console.log(dataMetéo.weather[0].hourly[0].weatherDesc[0].value)
 
     switch (dataMetéo.weather[0].hourly[0].weatherDesc[0].value)
     {
-        case 'Partly Cloudy ' || 'Patchy rain nearby ': 
-        $advice.textContent = 'Prenez un parapluie';
+        case 'Patchy rain nearby ': 
+        $advice.textContent = 'Prenez un parapluie.';
         break;
 
-        case 'Clair ': 
-        $advice.textContent = 'Prenez des lunettes de soleil';
+        case 'Clear ': 
+        $advice.textContent = 'Prenez une paire de lunettes de soleil.';
+        break;
+
+        case 'Overcast ' || 'Partly Cloudy ' || 'Mist ':
+        $advice.textContent = 'Prenez un manteau';
         break;
 
         default:
@@ -89,7 +93,7 @@ async function metéoCity(city) {
     const res2 = await fetch(`https://fr.wikipedia.org/api/rest_v1/page/summary/${city}`);
     const api2 = await res2.json();
 
-    console.log(api2.title)
+    // console.log(api2.title)
 
     try {
         createMéteo(api, api2);
